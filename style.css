@@ -143,7 +143,7 @@ body.bg-fuji::after {
 
 /* Theme 4: Mountain Sunset (Default) */
 body.bg-sunset {
-    background: url('mountain_sunset.png') no-repeat center center fixed;
+    background: url('mountain_sunset.jpg') no-repeat center center fixed;
     background-size: cover;
 }
 body.bg-sunset::before {
@@ -851,7 +851,7 @@ body.dark-mode .about-spec-grid {
     display: grid;
     grid-template-columns: 165px 1fr;
     height: 100%;
-    margin: -24px;
+    margin: 0;
 }
 
 .devlog-sidebar {
@@ -961,7 +961,7 @@ body.dark-mode .devlog-body-text code {
     display: flex;
     flex-direction: column;
     height: 100%;
-    margin: -24px;
+    margin: 0;
 }
 
 .paint-toolbar {
@@ -1178,7 +1178,7 @@ body.dark-mode .snake-score-box {
     display: flex;
     flex-direction: column;
     height: 100%;
-    margin: -24px;
+    margin: 0;
     position: relative;
 }
 
