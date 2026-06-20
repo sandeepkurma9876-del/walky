@@ -344,7 +344,7 @@ body.bg-sunset::after {
    AEROGLASS WINDOW ARCHITECTURE
    ========================================== */
 .window {
-    position: absolute;
+    position: fixed;
     width: 640px;
     height: 480px;
     min-width: 350px;

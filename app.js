@@ -173,8 +173,9 @@ function initWindowManager() {
         header.addEventListener('mousedown', (e) => {
             if (win.classList.contains('maximized')) return;
             isDragging = true;
-            offsetX = e.clientX - win.offsetLeft;
-            offsetY = e.clientY - win.offsetTop;
+            const rect = win.getBoundingClientRect();
+            offsetX = e.clientX - rect.left;
+            offsetY = e.clientY - rect.top;
             focusWindow(win);
             document.addEventListener('mousemove', mouseMoveHandler);
             document.addEventListener('mouseup', mouseUpHandler);
@@ -185,8 +186,9 @@ function initWindowManager() {
             if (win.classList.contains('maximized')) return;
             isDragging = true;
             const touch = e.touches[0];
-            offsetX = touch.clientX - win.offsetLeft;
-            offsetY = touch.clientY - win.offsetTop;
+            const rect = win.getBoundingClientRect();
+            offsetX = touch.clientX - rect.left;
+            offsetY = touch.clientY - rect.top;
             focusWindow(win);
             document.addEventListener('touchmove', touchMoveHandler, { passive: false });
             document.addEventListener('touchend', touchEndHandler);
@@ -277,14 +279,16 @@ function openWindow(winId) {
     
     // Center the window on the viewport, with robust measurement
     if (!win.dataset.positioned) {
-        // Calculate offsetWidth/Height. If window is display hidden, it will fall back
-        const winWidth = win.offsetWidth || parseInt(win.style.width) || 640;
-        const winHeight = win.offsetHeight || parseInt(win.style.height) || 480;
+        // Use inline style width/height first (most reliable for position:fixed),
+        // fall back to CSS defaults (640x480)
+        const winWidth = parseInt(win.style.width) || 640;
+        const winHeight = parseInt(win.style.height) || 480;
         const vpWidth = window.innerWidth;
         const vpHeight = window.innerHeight - 72; // account for dock
         
+        // Minimum top of 60px ensures the window-header (~45px) is always visible
         const centerX = Math.max(20, (vpWidth - winWidth) / 2);
-        const centerY = Math.max(20, (vpHeight - winHeight) / 2);
+        const centerY = Math.max(60, (vpHeight - winHeight) / 2);
         
         win.style.left = `${centerX}px`;
         win.style.top = `${centerY}px`;
