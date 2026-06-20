@@ -1,22 +1,14 @@
-# Devlog 3: Custom Features and Final Assembly
+# Devlog 3: Advanced App Ecosystem & Control Center
 
-Today was dedicated to adding high-fidelity, interactive feature sets that exceed standard guides.
+Today, I finalized the feature set by coding fully operational custom apps and a simulated Control Center.
 
-### 1. Retro Canvas Paint (CyberPaint)
-I added a full canvas drawing tool. Moving the mouse inside the canvas draws pixels. Added color palette presets, line thickness sliders, and a clear button.
+### 1. macOS-style Control Center
+Added a floating Control Center panel linked to a dock widget. It allows live toggle of Dark Mode, sound volume control, screen brightness adjustment (filtering the DOM), and simulates hardware load stats (CPU/RAM metrics) in real-time.
 
-### 2. Retro Snake Game
-Built a custom, self-contained grid-based Snake game. Implemented keyboard arrow listeners, score tracking, start/restart buttons, and synthesized retro win/fail buzzes.
+### 2. Synthesized Startup Sound
+Implemented a premium Web Audio API startup sound. Clicking "Unlock" in the passwordless macOS login screen plays a rich major 7th chord sweep rather than a generic beep.
 
-### 3. Interactive Shell Terminal with Matrix Falling Code
-I built an interactive terminal emulator. It parses commands like `help`, `neofetch` (displays an ASCII system logo), `theme`, `clear`, and `matrix`.
-*   Typing `matrix` starts a glowing, falling green character rain animation inside the terminal window! Typing `matrix` again toggles it off.
-
-### 4. Audio Synthesizer (Web Audio API)
-Using only native code (no audio files!), I configured an `AudioContext` to generate retro synthesizers:
-*   *Startup Sound*: A nice, rich minor-to-major synthesizer chord.
-*   *Click Sound*: Soft high-pitched click.
-*   *Game Win/Lose Beeps*: Fun high/low frequency transitions.
-
-### 5. Final Polishing
-Tested window transitions, added volume and background controllers to the customizer, and styled all items for maximum responsiveness. AetherOS is ready to run!
+### 3. Built-in Apps
+*   **AeroPaint**: Drawing canvas supporting brush stroke size, custom hex codes, clear action, and touch screen support.
+*   **Retro Snake**: Self-contained retro arcade game inside a window with collision detection and point sound effects.
+*   **Aether Shell**: Interactive terminal using zsh-style prompt that supports `neofetch`, `theme`, `matrix` code waterfall canvas, and command clear.
