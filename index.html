@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Walky OS</title>
+    <title>Mountain OS</title>
     <meta name="description" content="A personal web-based desktop environment with draggable windows, a paint app, snake game, interactive terminal, and more.">
     <link rel="stylesheet" href="style.css">
 </head>
@@ -17,7 +17,7 @@
             <input type="password" id="password-input" class="login-password-input" value="••••••••" readonly>
             <button type="submit" id="boot-btn" class="login-submit-btn">➔</button>
         </form>
-        <div class="login-hint">Click the arrow or press Enter to unlock Walky OS</div>
+        <div class="login-hint">Click the arrow or press Enter to unlock Mountain OS</div>
     </div>
 
     <!-- 2. System Desktop Area -->
@@ -70,12 +70,12 @@
         </div>
         <div class="window-body">
             <div class="about-container">
-                <div class="about-header-logo">Walky OS</div>
+                <div class="about-header-logo">Mountain OS</div>
                 <div class="about-tag">WebOS 1</div>
                 <p>A personal desktop built for the web. Drag windows around, draw something, play snake, or mess with the terminal. Built from scratch with HTML, CSS, and JavaScript.</p>
                 <div class="about-spec-grid">
                     <span class="spec-label">Environment</span>
-                    <span class="spec-val">Walky OS v1.0</span>
+                    <span class="spec-val">Mountain OS v1.0</span>
                     <span class="spec-label">Host Browser</span>
                     <span class="spec-val">Local Javascript Runtime</span>
                     <span class="spec-label">Graphics Engine</span>
@@ -223,17 +223,17 @@
                     <div class="customizer-row">
                         <label for="wallpaper-select" class="paint-label">Choose Preset:</label>
                         <select id="wallpaper-select" class="customizer-input-text" style="width: 180px;">
-                            <option value="monterey">Monterey Breeze</option>
-                            <option value="obsidian">Obsidian Dark</option>
-                            <option value="emerald">Emerald Mist</option>
-                            <option value="sunset">Sunset Satin</option>
+                            <option value="sunset">Mountain Sunset</option>
+                            <option value="fuji">Misty Fuji</option>
+                            <option value="alps">Alps Twilight</option>
+                            <option value="obsidian">Obsidian Peak</option>
                         </select>
                     </div>
                     <div class="wallpaper-presets">
-                        <div class="wallpaper-card bg-monterey active" data-theme="monterey" style="background: linear-gradient(135deg, #8ec5fc 0%, #e0c3fc 100%); color: #4a3b6d; font-weight: 700;">Monterey</div>
+                        <div class="wallpaper-card bg-sunset active" data-theme="sunset" style="background: linear-gradient(135deg, #fb923c 0%, #ca8a04 100%); color: #78350f; font-weight: 700;">Sunset</div>
+                        <div class="wallpaper-card bg-fuji" data-theme="fuji" style="background: linear-gradient(135deg, #a7f3d0 0%, #064e3b 100%); color: #064e3b; font-weight: 700;">Misty Fuji</div>
+                        <div class="wallpaper-card bg-alps" data-theme="alps" style="background: linear-gradient(135deg, #2e1065 0%, #0f172a 100%); color: #e0c3fc; font-weight: 700;">Alps</div>
                         <div class="wallpaper-card bg-obsidian" data-theme="obsidian" style="background: linear-gradient(135deg, #1c1917 0%, #44403c 100%); color: #f5f0e8; font-weight: 700;">Obsidian</div>
-                        <div class="wallpaper-card bg-emerald" data-theme="emerald" style="background: linear-gradient(135deg, #a7f3d0 0%, #064e3b 100%); color: #064e3b; font-weight: 700;">Emerald</div>
-                        <div class="wallpaper-card bg-sunset" data-theme="sunset" style="background: linear-gradient(135deg, #ffedd5 0%, #ca8a04 100%); color: #78350f; font-weight: 700;">Sunset</div>
                     </div>
                     <div class="customizer-row" style="margin-top: 8px;">
                         <span class="paint-label">Custom Image URL:</span>

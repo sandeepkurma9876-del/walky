@@ -87,70 +87,78 @@ body::before, body::after {
     transition: all 1.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* Theme 1: Monterey Breeze (Default) */
-body.bg-monterey {
-    background: #0b081e;
+/* Theme 1: Alps Twilight */
+body.bg-alps {
+    background: linear-gradient(135deg, #1e1b4b 0%, #311042 50%, #0f172a 100%);
 }
-body.bg-monterey::before {
-    background: radial-gradient(circle, #e0c3fc 0%, rgba(142, 197, 252, 0.5) 70%);
+body.bg-alps::before {
+    background: radial-gradient(circle, #e0c3fc 0%, rgba(142, 197, 252, 0.3) 70%);
     top: -15%;
     left: -10%;
     animation: float1 25s ease-in-out infinite;
 }
-body.bg-monterey::after {
-    background: radial-gradient(circle, #8ec5fc 0%, rgba(224, 195, 252, 0.5) 70%);
+body.bg-alps::after {
+    background: radial-gradient(circle, #8ec5fc 0%, rgba(224, 195, 252, 0.3) 70%);
     bottom: -15%;
     right: -10%;
     animation: float2 30s ease-in-out infinite;
 }
 
-/* Theme 2: Obsidian Dark */
+/* Theme 2: Obsidian Peak */
 body.bg-obsidian {
-    background: #09090b;
+    background: linear-gradient(135deg, #180808 0%, #292524 100%);
 }
 body.bg-obsidian::before {
-    background: radial-gradient(circle, #27272a 0%, transparent 70%);
+    background: radial-gradient(circle, #3f3f46 0%, transparent 70%);
     top: 5%;
     left: 10%;
+    opacity: 0.4;
 }
 body.bg-obsidian::after {
-    background: radial-gradient(circle, #18181b 0%, transparent 70%);
+    background: radial-gradient(circle, #27272a 0%, transparent 70%);
     bottom: 5%;
     right: 10%;
+    opacity: 0.4;
 }
 
-/* Theme 3: Emerald Mist */
-body.bg-emerald {
-    background: #022c22;
+/* Theme 3: Misty Fuji */
+body.bg-fuji {
+    background: url('misty_fuji.png') no-repeat center center fixed;
+    background-size: cover;
 }
-body.bg-emerald::before {
-    background: radial-gradient(circle, #34d399 0%, rgba(6, 78, 59, 0.4) 70%);
+body.bg-fuji::before {
+    background: radial-gradient(circle, #a7f3d0 0%, rgba(6, 78, 59, 0.15) 70%);
     top: -10%;
     left: 20%;
     animation: float1 22s ease-in-out infinite;
+    opacity: 0.3;
 }
-body.bg-emerald::after {
-    background: radial-gradient(circle, #059669 0%, rgba(2, 44, 34, 0.4) 70%);
+body.bg-fuji::after {
+    background: radial-gradient(circle, #059669 0%, rgba(2, 44, 34, 0.15) 70%);
     bottom: -10%;
     right: 20%;
     animation: float2 28s ease-in-out infinite;
+    opacity: 0.3;
 }
 
-/* Theme 4: Sunset Satin */
+/* Theme 4: Mountain Sunset (Default) */
 body.bg-sunset {
-    background: #1c0d02;
+    background: url('mountain_sunset.png') no-repeat center center fixed;
+    background-size: cover;
 }
 body.bg-sunset::before {
-    background: radial-gradient(circle, #fb923c 0%, rgba(120, 53, 15, 0.4) 70%);
+    background: radial-gradient(circle, #fb923c 0%, rgba(120, 53, 15, 0.15) 70%);
     top: -15%;
     left: -5%;
     animation: float1 26s ease-in-out infinite;
+    opacity: 0.3;
 }
 body.bg-sunset::after {
-    background: radial-gradient(circle, #f43f5e 0%, rgba(28, 13, 2, 0.4) 70%);
+    background: radial-gradient(circle, #f43f5e 0%, rgba(28, 13, 2, 0.15) 70%);
     bottom: -15%;
     right: -5%;
     animation: float2 28s ease-in-out infinite;
+    opacity: 0.3;
 }
 
 @keyframes float1 {

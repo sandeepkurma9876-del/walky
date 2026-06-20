@@ -858,7 +858,7 @@ function printTerminalLine(text) {
 }
 
 function executeCommand(cmdStr) {
-    printTerminalLine(`sandeep@walky:~$ ${cmdStr}`);
+    printTerminalLine(`sandeep@mountain-os:~$ ${cmdStr}`);
     playSound('click');
     
     const parts = cmdStr.split(' ');
@@ -871,18 +871,18 @@ function executeCommand(cmdStr) {
             printTerminalLine("  help     - Display this menu");
             printTerminalLine("  neofetch - Display system specifications");
             printTerminalLine("  matrix   - Toggle the matrix code rain animation");
-            printTerminalLine("  theme    - Set wallpaper: monterey, obsidian, emerald, sunset (e.g., theme obsidian)");
+            printTerminalLine("  theme    - Set wallpaper: sunset, fuji, alps, obsidian (e.g., theme fuji)");
             printTerminalLine("  audio    - Toggle synthesized sound output: on, off");
             printTerminalLine("  clear    - Clear console output");
             printTerminalLine("  devlogs  - Show devlog options (e.g., devlogs 1)");
             break;
             
         case 'neofetch':
-            printTerminalLine("OS: Walky OS (AeroGlass v1.0)");
+            printTerminalLine("OS: Mountain OS (AeroGlass v1.0)");
             printTerminalLine("Host: Web Browser");
             printTerminalLine("Shell: AeroShell v1.0");
             printTerminalLine("Resolution: " + window.innerWidth + "x" + window.innerHeight);
-            printTerminalLine("Theme: Monterey Breeze (Liquid Glass)");
+            printTerminalLine("Theme: Mountain Sunset (Liquid Glass)");
             break;
             
         case 'clear':
@@ -890,11 +890,11 @@ function executeCommand(cmdStr) {
             break;
             
         case 'theme':
-            if (['monterey', 'obsidian', 'emerald', 'sunset'].includes(arg)) {
+            if (['sunset', 'fuji', 'alps', 'obsidian'].includes(arg)) {
                 setTheme(arg);
                 printTerminalLine(`Theme set to [${arg}].`);
             } else {
-                printTerminalLine("Unknown theme. Try: theme [monterey|obsidian|emerald|sunset]");
+                printTerminalLine("Unknown theme. Try: theme [sunset|fuji|alps|obsidian]");
             }
             break;
             
@@ -937,7 +937,7 @@ function executeCommand(cmdStr) {
 
 function setTheme(themeName) {
     const body = document.body;
-    body.classList.remove('bg-monterey', 'bg-obsidian', 'bg-emerald', 'bg-sunset');
+    body.classList.remove('bg-sunset', 'bg-fuji', 'bg-alps', 'bg-obsidian');
     
     // Reset cards selection in customizer app
     document.querySelectorAll('.wallpaper-card').forEach(card => {
@@ -952,14 +952,14 @@ function setTheme(themeName) {
     const sel = document.getElementById('wallpaper-select');
     if (sel) sel.value = themeName;
     
-    if (themeName === 'monterey') {
-        body.classList.add('bg-monterey');
+    if (themeName === 'sunset') {
+        body.classList.add('bg-sunset');
+    } else if (themeName === 'fuji') {
+        body.classList.add('bg-fuji');
+    } else if (themeName === 'alps') {
+        body.classList.add('bg-alps');
     } else if (themeName === 'obsidian') {
         body.classList.add('bg-obsidian');
-    } else if (themeName === 'emerald') {
-        body.classList.add('bg-emerald');
-    } else if (themeName === 'sunset') {
-        body.classList.add('bg-sunset');
     }
 }
 
@@ -1087,8 +1087,8 @@ document.addEventListener('DOMContentLoaded', () => {
     initTerminal();
     initCustomizer();
     
-    // Set Monterey Breeze as default body class
-    setTheme('monterey');
+    // Set Mountain Sunset as default body class
+    setTheme('sunset');
     
     // Update battery level simulation
     const batteryLevel = document.getElementById('system-battery');

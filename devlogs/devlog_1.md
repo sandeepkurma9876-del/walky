@@ -1,6 +1,6 @@
 # Devlog 1: Setting up AeroGlass Design and Layout
 
-Today, I began building **AeroGlass OS** (Walky OS), my web-based operating system. I wanted to move away from traditional retro templates and instead adopt a premium, ultra-slick macOS-like liquid glass theme.
+Today, I began building **AeroGlass OS** (Mountain OS), my web-based operating system. I wanted to move away from traditional retro templates and instead adopt a premium, ultra-slick macOS-like liquid glass theme.
 
 ### 1. Designing the Glassmorphism UI
 I defined the core design tokens in `style.css`:
