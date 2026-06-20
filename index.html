@@ -12,7 +12,7 @@
     <!-- 1. Boot / Welcome Screen (macOS-style Lockscreen) -->
     <div id="welcome-screen">
         <div class="login-avatar">👨‍💻</div>
-        <div class="login-username">Sandeep</div>
+        <div class="login-username">admin</div>
         <form id="login-form" class="login-form" onsubmit="event.preventDefault();">
             <input type="password" id="password-input" class="login-password-input" value="••••••••" readonly>
             <button type="submit" id="boot-btn" class="login-submit-btn">➔</button>
@@ -230,9 +230,9 @@
                         </select>
                     </div>
                     <div class="wallpaper-presets">
-                        <div class="wallpaper-card bg-sunset active" data-theme="sunset" style="background: linear-gradient(135deg, #fb923c 0%, #ca8a04 100%); color: #78350f; font-weight: 700;">Sunset</div>
-                        <div class="wallpaper-card bg-fuji" data-theme="fuji" style="background: linear-gradient(135deg, #a7f3d0 0%, #064e3b 100%); color: #064e3b; font-weight: 700;">Misty Fuji</div>
-                        <div class="wallpaper-card bg-alps" data-theme="alps" style="background: linear-gradient(135deg, #2e1065 0%, #0f172a 100%); color: #e0c3fc; font-weight: 700;">Alps</div>
+                        <div class="wallpaper-card bg-sunset active" data-theme="sunset" style="background: linear-gradient(rgba(0,0,0,0.25), rgba(0,0,0,0.25)), url('mountain_sunset.jpg') no-repeat center center; background-size: cover; color: #ffffff; text-shadow: 0 1px 3px rgba(0,0,0,0.8); font-weight: 700;">Sunset</div>
+                        <div class="wallpaper-card bg-fuji" data-theme="fuji" style="background: linear-gradient(rgba(0,0,0,0.25), rgba(0,0,0,0.25)), url('misty_fuji.png') no-repeat center center; background-size: cover; color: #ffffff; text-shadow: 0 1px 3px rgba(0,0,0,0.8); font-weight: 700;">Misty Fuji</div>
+                        <div class="wallpaper-card bg-alps" data-theme="alps" style="background: linear-gradient(rgba(0,0,0,0.25), rgba(0,0,0,0.25)), url('swiss_alps.png') no-repeat center center; background-size: cover; color: #ffffff; text-shadow: 0 1px 3px rgba(0,0,0,0.8); font-weight: 700;">Alps</div>
                         <div class="wallpaper-card bg-obsidian" data-theme="obsidian" style="background: linear-gradient(135deg, #1c1917 0%, #44403c 100%); color: #f5f0e8; font-weight: 700;">Obsidian</div>
                     </div>
                     <div class="customizer-row" style="margin-top: 8px;">
@@ -268,8 +268,8 @@
     <!-- 4. System Start Menu -->
     <div id="start-menu">
         <div class="start-menu-header">
-            <div class="start-menu-user">Sandeep</div>
-            <div class="start-menu-user-role">Local User</div>
+            <div class="start-menu-user">admin</div>
+            <div class="start-menu-user-role">Local Administrator</div>
         </div>
         <div class="start-menu-item" data-window="about-window">
             <span class="start-menu-icon">📡</span>
@@ -308,7 +308,7 @@
                     <span class="cc-tile-icon">📶</span>
                     <div class="cc-tile-text">
                         <span class="cc-title">Wi-Fi</span>
-                        <span class="cc-subtitle">Sandeep_WiFi</span>
+                        <span class="cc-subtitle">admin_WiFi</span>
                     </div>
                 </div>
             </div>
@@ -366,6 +366,40 @@
                 <button id="control-center-btn" class="dock-cc-btn" title="Control Center">🎛️</button>
             </div>
             <div id="system-clock" class="dock-clock">00:00</div>
+        </div>
+    </div>
+
+    <!-- AI Help Agent Component -->
+    <div id="ai-agent-container">
+        <!-- Floating Action Button -->
+        <button id="ai-agent-fab" class="ai-agent-fab" title="Mountain OS AI Copilot">
+            <span class="ai-agent-icon">🤖</span>
+            <span class="ai-agent-pulse"></span>
+        </button>
+        
+        <!-- Chat Popup Panel -->
+        <div id="ai-agent-chat" class="ai-agent-chat-panel">
+            <div class="ai-chat-header">
+                <div class="ai-chat-title">
+                    <span class="ai-chat-avatar">🤖</span>
+                    <div>
+                        <div class="ai-chat-name">Mountain AI Copilot</div>
+                        <div class="ai-chat-status"><span class="status-dot"></span>Online</div>
+                    </div>
+                </div>
+                <button id="ai-chat-close" class="ai-chat-close-btn">&times;</button>
+            </div>
+            
+            <div id="ai-chat-messages" class="ai-chat-messages-container">
+                <div class="ai-message system">
+                    Hi! I'm your Mountain OS AI Copilot. Ask me anything, or type a query!
+                </div>
+            </div>
+            
+            <div class="ai-chat-input-area">
+                <input type="text" id="ai-chat-input" placeholder="Ask me anything..." class="ai-chat-input-text">
+                <button id="ai-chat-send" class="ai-chat-send-btn">➔</button>
+            </div>
         </div>
     </div>
 

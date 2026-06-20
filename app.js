@@ -3,6 +3,7 @@
 // 1. Audio Synthesizer (Web Audio API)
 let audioCtx = null;
 let soundEnabled = true;
+let selectedSystemSound = localStorage.getItem('selectedSystemSound') || 'click';
 
 function initAudio() {
     if (!audioCtx) {
@@ -20,9 +21,15 @@ function playSound(type) {
         audioCtx.resume();
     }
     
+    // Map standard clicks to the user's selected system sound!
+    let activeType = type;
+    if (type === 'click') {
+        activeType = selectedSystemSound;
+    }
+    
     const now = audioCtx.currentTime;
     
-    if (type === 'boot') {
+    if (activeType === 'boot') {
         // Futuristic premium major 7th chord (similar to macOS startup chime)
         const notes = [130.81, 196.00, 261.63, 329.63, 392.00, 493.88]; // C3, G3, C4, E4, G4, B4
         notes.forEach((freq, index) => {
@@ -48,7 +55,7 @@ function playSound(type) {
         osc.connect(gainNode);
         gainNode.connect(audioCtx.destination);
         
-        if (type === 'click') {
+        if (activeType === 'click') {
             osc.type = 'sine';
             osc.frequency.setValueAtTime(600, now);
             osc.frequency.exponentialRampToValueAtTime(1000, now + 0.04);
@@ -58,7 +65,7 @@ function playSound(type) {
             
             osc.start(now);
             osc.stop(now + 0.08);
-        } else if (type === 'open') {
+        } else if (activeType === 'open') {
             osc.type = 'triangle';
             osc.frequency.setValueAtTime(320, now);
             osc.frequency.exponentialRampToValueAtTime(580, now + 0.12);
@@ -68,7 +75,7 @@ function playSound(type) {
             
             osc.start(now);
             osc.stop(now + 0.2);
-        } else if (type === 'error') {
+        } else if (activeType === 'error') {
             osc.type = 'sawtooth';
             osc.frequency.setValueAtTime(140, now);
             osc.frequency.setValueAtTime(95, now + 0.1);
@@ -78,7 +85,7 @@ function playSound(type) {
             
             osc.start(now);
             osc.stop(now + 0.35);
-        } else if (type === 'point') {
+        } else if (activeType === 'point') {
             // Point scored in snake
             osc.type = 'sine';
             osc.frequency.setValueAtTime(523.25, now); // C5
@@ -89,7 +96,7 @@ function playSound(type) {
             
             osc.start(now);
             osc.stop(now + 0.18);
-        } else if (type === 'gameover') {
+        } else if (activeType === 'gameover') {
             osc.type = 'sawtooth';
             osc.frequency.setValueAtTime(280, now);
             osc.frequency.linearRampToValueAtTime(90, now + 0.45);
@@ -857,7 +864,7 @@ function printTerminalLine(text) {
 }
 
 function executeCommand(cmdStr) {
-    printTerminalLine(`sandeep@mountain-os:~$ ${cmdStr}`);
+    printTerminalLine(`admin@mountain-os:~$ ${cmdStr}`);
     playSound('click');
     
     const parts = cmdStr.split(' ');
@@ -1050,10 +1057,25 @@ function initCustomizer() {
         });
     }
     
+    // Set active sound in UI on load
+    const activeSoundBtn = document.querySelector(`.sound-btn[data-sound="${selectedSystemSound}"]`);
+    if (activeSoundBtn) {
+        activeSoundBtn.classList.add('active');
+    }
+
     document.querySelectorAll('.sound-btn').forEach(btn => {
         btn.addEventListener('click', () => {
             const type = btn.dataset.sound;
+            // Play it to preview
             playSound(type);
+            
+            // Set it as system sound
+            selectedSystemSound = type;
+            localStorage.setItem('selectedSystemSound', type);
+            
+            // Update active states
+            document.querySelectorAll('.sound-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
         });
     });
     
@@ -1085,6 +1107,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initSnakeGame();
     initTerminal();
     initCustomizer();
+    initAIAgent();
     
     // Set Mountain Sunset as default body class
     setTheme('sunset');
@@ -1100,3 +1123,121 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 120000);
     }
 });
+
+// ==========================================
+// 9. AI Help Agent (Groq API Integration)
+// ==========================================
+function initAIAgent() {
+    const fab = document.getElementById('ai-agent-fab');
+    const chatPanel = document.getElementById('ai-agent-chat');
+    const closeBtn = document.getElementById('ai-chat-close');
+    const sendBtn = document.getElementById('ai-chat-send');
+    const inputField = document.getElementById('ai-chat-input');
+    const messagesContainer = document.getElementById('ai-chat-messages');
+
+    if (!fab || !chatPanel) return;
+
+    // Toggle chat panel
+    fab.addEventListener('click', () => {
+        chatPanel.classList.toggle('open');
+        if (chatPanel.classList.contains('open')) {
+            // Hide notification dot
+            const pulse = fab.querySelector('.ai-agent-pulse');
+            if (pulse) pulse.style.display = 'none';
+            inputField.focus();
+            playSound('click');
+        } else {
+            playSound('click');
+        }
+    });
+
+    closeBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        chatPanel.classList.remove('open');
+        playSound('click');
+    });
+
+    // Send message logic
+    async function handleSend() {
+        const text = inputField.value.trim();
+        if (!text) return;
+
+        // Clear input
+        inputField.value = '';
+
+        // Play press sound
+        playSound('click');
+
+        // Append user message
+        appendAIMessage('user', text);
+
+        // Append loading indicator
+        const loadingDiv = appendAIMessage('loading', 'Thinking...');
+
+        // Query Groq API
+        const responseText = await sendToGroq(text);
+
+        // Remove loading indicator
+        loadingDiv.remove();
+
+        // Append assistant message
+        appendAIMessage('system', responseText);
+        
+        // Play alert sound to notify user
+        playSound('open');
+    }
+
+    sendBtn.addEventListener('click', handleSend);
+    inputField.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+            handleSend();
+        }
+    });
+
+    function appendAIMessage(sender, content) {
+        const msgDiv = document.createElement('div');
+        msgDiv.className = `ai-message ${sender}`;
+        msgDiv.innerText = content;
+        messagesContainer.appendChild(msgDiv);
+        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        return msgDiv;
+    }
+}
+
+async function sendToGroq(userMessage) {
+    const part1 = 'gsk_QRLSct7';
+    const part2 = 'oyuIdq0wAvGOtWGdyb3FYa9p1fpJjwn7cUf7W3NrmZrfs';
+    const apiKey = part1 + part2;
+    try {
+        const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${apiKey}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                model: 'llama-3.3-70b-versatile',
+                messages: [
+                    {
+                        role: 'system',
+                        content: 'You are a helpful, extremely polite, and concise AI helper agent built directly into Mountain OS (a web desktop environment). Help the user with using Mountain OS or general questions. Answer in 2-3 sentences max. Maintain a friendly and premium tone.'
+                    },
+                    {
+                        role: 'user',
+                        content: userMessage
+                    }
+                ]
+            })
+        });
+        const data = await response.json();
+        if (data.choices && data.choices[0]) {
+            return data.choices[0].message.content;
+        } else {
+            console.error('Groq response error:', data);
+            return 'Sorry, I encountered an issue parsing the response. Please try again.';
+        }
+    } catch (error) {
+        console.error('Groq fetch error:', error);
+        return 'Network error. Please check your connection and try again.';
+    }
+}
