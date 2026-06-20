@@ -1530,10 +1530,8 @@ body.dark-mode ::-webkit-scrollbar-thumb:hover {
 /* Responsive Window Rules */
 @media (max-width: 768px) {
     .window {
-        width: 90% !important;
-        height: 70% !important;
-        left: 5% !important;
-        top: 10% !important;
+        max-width: 95%;
+        max-height: 85%;
     }
     
     #dock-container {

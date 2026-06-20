@@ -197,9 +197,6 @@ function initWindowManager() {
             let left = e.clientX - offsetX;
             let top = e.clientY - offsetY;
             
-            // Constrain top boundary
-            if (top < 0) top = 0;
-            
             win.style.left = `${left}px`;
             win.style.top = `${top}px`;
         }
@@ -209,8 +206,6 @@ function initWindowManager() {
             const touch = e.touches[0];
             let left = touch.clientX - offsetX;
             let top = touch.clientY - offsetY;
-            
-            if (top < 0) top = 0;
             
             win.style.left = `${left}px`;
             win.style.top = `${top}px`;
