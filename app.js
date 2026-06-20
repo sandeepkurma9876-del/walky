@@ -127,7 +127,7 @@ const devlogsData = {
 <ul>
 <li>Attached <code>mousedown</code> and <code>touchstart</code> listeners to the window header to allow seamless window dragging across the desktop on desktop and mobile browsers.</li>
 <li>Maintained a global <code>highestZIndex</code> variable. Whenever a user clicks on a window, it pops to the foreground dynamically, focusing state.</li>
-<li>Created macOS-style traffic light controls (close, minimize, maximize) that render clean icons (`×`, `−`, `+`) on hover.</li>
+<li>Created macOS-style traffic light controls (close, minimize, maximize) that render clean icons ('×', '−', '+') on hover.</li>
 </ul>`,
     devlog3: `<h1>Devlog 3: Advanced App Ecosystem & Control Center</h1>
 <p>Today, I finalized the feature set by coding fully operational custom apps and a simulated Control Center.</p>
