@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Walky OS</title>
+    <meta name="description" content="A personal web-based desktop environment with draggable windows, a paint app, snake game, interactive terminal, and more.">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- 1. Boot / Welcome Welcome Screen (Password-less Login) -->
+    <div id="welcome-screen">
+        <div class="welcome-logo">Walky OS</div>
+        <div class="welcome-subtitle">personal desktop</div>
+        <button id="boot-btn" class="boot-button">Enter</button>
+    </div>
+
+    <!-- 2. System Desktop Area -->
+    <div id="desktop">
+        
+        <!-- App Shortcut Icons -->
+        <div class="desktop-icon" data-window="about-window">
+            <div class="icon-image">📡</div>
+            <div class="icon-label">System Specs</div>
+        </div>
+
+        <div class="desktop-icon" data-window="devlog-window">
+            <div class="icon-image">📚</div>
+            <div class="icon-label">Devlogs</div>
+        </div>
+
+        <div class="desktop-icon" data-window="paint-window">
+            <div class="icon-image">🎨</div>
+            <div class="icon-label">CyberPaint</div>
+        </div>
+
+        <div class="desktop-icon" data-window="snake-window">
+            <div class="icon-image">🐍</div>
+            <div class="icon-label">Retro Snake</div>
+        </div>
+
+        <div class="desktop-icon" data-window="terminal-window">
+            <div class="icon-image">🖥️</div>
+            <div class="icon-label">Shell Terminal</div>
+        </div>
+
+        <div class="desktop-icon" data-window="customizer-window">
+            <div class="icon-image">⚙️</div>
+            <div class="icon-label">Customizer</div>
+        </div>
+
+    </div>
+
+    <!-- 3. Windows Container -->
+    
+    <!-- App: About Spec Window -->
+    <div id="about-window" class="window">
+        <div class="window-header">
+            <div class="window-controls">
+                <button class="window-btn close"></button>
+                <button class="window-btn minimize"></button>
+                <button class="window-btn maximize"></button>
+            </div>
+            <div class="window-title">System Specs</div>
+        </div>
+        <div class="window-body">
+            <div class="about-container">
+                <div class="about-header-logo">Walky OS</div>
+                <p>A personal desktop environment that runs in your browser. Built with vanilla HTML, CSS, and JavaScript — featuring draggable windows, a drawing canvas, a snake game, and an interactive terminal.</p>
+                <div class="about-spec-grid">
+                    <span class="spec-label">Environment</span>
+                    <span class="spec-val">Walky OS v1.0</span>
+                    <span class="spec-label">Host Browser</span>
+                    <span class="spec-val">Local Javascript Runtime</span>
+                    <span class="spec-label">Graphics Engine</span>
+                    <span class="spec-val">HTML5 Canvas (2D Accelerator)</span>
+                    <span class="spec-label">Audio Engine</span>
+                    <span class="spec-val">Web Audio API Synth</span>
+                    <span class="spec-label">Access Policy</span>
+                    <span class="spec-val">Unlocked (Passwordless)</span>
+                </div>
+                <p style="font-size: 0.8rem; color: var(--text-tertiary);">Built for Hack Club Stardance — WebOS Mission 1</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- App: Devlogs Reader -->
+    <div id="devlog-window" class="window" style="width: 720px; height: 500px;">
+        <div class="window-header">
+            <div class="window-controls">
+                <button class="window-btn close"></button>
+                <button class="window-btn minimize"></button>
+                <button class="window-btn maximize"></button>
+            </div>
+            <div class="window-title">Devlogs</div>
+        </div>
+        <div class="window-body" style="padding: 0;">
+            <div class="devlog-app">
+                <div class="devlog-sidebar">
+                    <div class="devlog-sidebar-title">Devlogs</div>
+                    <button class="devlog-nav-btn active" data-log="devlog1">1. Structure & Style</button>
+                    <button class="devlog-nav-btn" data-log="devlog2">2. Window Manager</button>
+                    <button class="devlog-nav-btn" data-log="devlog3">3. Advanced Apps</button>
+                </div>
+                <div class="devlog-content-area">
+                    <div id="devlog-body" class="devlog-body-text">
+                        <!-- Loaded dynamically -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- App: CyberPaint -->
+    <div id="paint-window" class="window" style="width: 700px; height: 520px;">
+        <div class="window-header">
+            <div class="window-controls">
+                <button class="window-btn close"></button>
+                <button class="window-btn minimize"></button>
+                <button class="window-btn maximize"></button>
+            </div>
+            <div class="window-title">Paint</div>
+        </div>
+        <div class="window-body" style="padding: 0;">
+            <div class="paint-container">
+                <div class="paint-toolbar">
+                    <div class="paint-tools-group">
+                        <span class="paint-label">Color:</span>
+                        <div class="color-swatch active" data-color="#5ac8fa"></div>
+                        <div class="color-swatch" data-color="#b07aff"></div>
+                        <div class="color-swatch" data-color="#64d2b1"></div>
+                        <div class="color-swatch" data-color="#ff6b9d"></div>
+                        <div class="color-swatch" data-color="#ffb347"></div>
+                        <div class="color-swatch" data-color="#ffffff"></div>
+                    </div>
+                    <div class="paint-tools-group">
+                        <span class="paint-label">Size:</span>
+                        <input type="range" id="paint-size" class="paint-slider" min="1" max="25" value="5">
+                    </div>
+                    <button id="paint-clear" class="paint-btn">Clear Canvas</button>
+                </div>
+                <div class="paint-canvas-container">
+                    <canvas id="paint-canvas"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- App: Retro Snake -->
+    <div id="snake-window" class="window" style="width: 380px; height: 480px;">
+        <div class="window-header">
+            <div class="window-controls">
+                <button class="window-btn close"></button>
+                <button class="window-btn minimize"></button>
+                <button class="window-btn maximize" style="opacity: 0.3; pointer-events: none;"></button>
+            </div>
+            <div class="window-title">Retro Snake</div>
+        </div>
+        <div class="window-body">
+            <div class="snake-container">
+                <div class="snake-score-row">
+                    <div class="snake-score-box">Score: <span id="snake-score">0</span></div>
+                    <div class="snake-score-box">High: <span id="snake-highscore">0</span></div>
+                </div>
+                <div class="snake-game-screen">
+                    <canvas id="snake-canvas" width="300" height="300"></canvas>
+                    <div id="snake-overlay" class="snake-overlay">
+                        <div id="snake-overlay-status" class="snake-status">AETHER SNAKE</div>
+                        <button id="snake-start-btn" class="snake-btn">START GAME</button>
+                    </div>
+                </div>
+                <div style="font-size: 0.75rem; color: var(--text-muted);">Use keyboard arrow keys to guide the snake.</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- App: Shell Terminal -->
+    <div id="terminal-window" class="window" style="width: 680px; height: 420px;">
+        <div class="window-header">
+            <div class="window-controls">
+                <button class="window-btn close"></button>
+                <button class="window-btn minimize"></button>
+                <button class="window-btn maximize"></button>
+            </div>
+            <div class="window-title">Aether Shell</div>
+        </div>
+        <div class="window-body" style="padding: 0;">
+            <div class="terminal-window">
+                <canvas id="matrix-canvas" class="terminal-matrix-canvas" style="display: none;"></canvas>
+                <div id="term-body" class="terminal-history">
+                    <!-- Lines printed here -->
+                </div>
+                <div class="terminal-input-row">
+                    <span class="terminal-prompt">aether-user@os:~$</span>
+                    <input type="text" id="term-input" class="terminal-input" autocomplete="off" spellcheck="false" autofocus>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- App: Customizer Settings -->
+    <div id="customizer-window" class="window" style="width: 580px; height: 450px;">
+        <div class="window-header">
+            <div class="window-controls">
+                <button class="window-btn close"></button>
+                <button class="window-btn minimize"></button>
+                <button class="window-btn maximize"></button>
+            </div>
+            <div class="window-title">Customizer</div>
+        </div>
+        <div class="window-body">
+            <div class="customizer-container">
+                
+                <!-- Wallpaper setting -->
+                <div class="customizer-section">
+                    <div class="customizer-section-title">Background Desktop Wallpaper</div>
+                    <div class="customizer-row">
+                        <label for="wallpaper-select" class="paint-label">Choose Preset:</label>
+                        <select id="wallpaper-select" class="customizer-input-text" style="width: 180px;">
+                            <option value="aurora">Electric Aurora</option>
+                            <option value="sunset">Neon Sunset</option>
+                            <option value="matrix">Digital Void</option>
+                            <option value="dark">Solid Charcoal</option>
+                        </select>
+                    </div>
+                    <div class="wallpaper-presets">
+                        <div class="wallpaper-card bg-gradient-aurora active" data-theme="aurora">Aurora</div>
+                        <div class="wallpaper-card bg-gradient-sunset" data-theme="sunset">Sunset</div>
+                        <div class="wallpaper-card bg-gradient-matrix" data-theme="matrix">Void</div>
+                        <div class="wallpaper-card bg-solid-dark" data-theme="dark">Solid</div>
+                    </div>
+                    <div class="customizer-row" style="margin-top: 8px;">
+                        <span class="paint-label">Custom Image URL:</span>
+                        <div style="display: flex; gap: 8px;">
+                            <input type="text" id="wallpaper-url-input" class="customizer-input-text" placeholder="https://example.com/wallpaper.png" style="width: 250px;">
+                            <button id="apply-wallpaper-url" class="paint-btn">Apply</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sound Board Setting -->
+                <div class="customizer-section">
+                    <div class="customizer-section-title">Web Audio Sound Synth</div>
+                    <div class="customizer-row">
+                        <span class="paint-label">Volume:</span>
+                        <input type="range" id="audio-volume" class="paint-slider" min="0" max="1" step="0.1" value="0.8">
+                    </div>
+                    <div class="sound-board-grid">
+                        <button class="sound-btn" data-sound="boot">Startup Chord</button>
+                        <button class="sound-btn" data-sound="click">Soft Tick</button>
+                        <button class="sound-btn" data-sound="open">Open Swell</button>
+                        <button class="sound-btn" data-sound="point">Point Beep</button>
+                        <button class="sound-btn" data-sound="error">Alert Buzz</button>
+                        <button class="sound-btn" data-sound="gameover">Synth Crash</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- 4. System Start Menu -->
+    <div id="start-menu">
+        <div class="start-menu-header">
+            <div class="start-menu-user">Sandeep</div>
+            <div class="start-menu-user-role">Local User</div>
+        </div>
+        <div class="start-menu-item" data-window="about-window">
+            <span class="start-menu-icon">📡</span>
+            <span class="start-menu-label">System Specs</span>
+        </div>
+        <div class="start-menu-item" data-window="devlog-window">
+            <span class="start-menu-icon">📚</span>
+            <span class="start-menu-label">Devlogs</span>
+        </div>
+        <div class="start-menu-item" data-window="paint-window">
+            <span class="start-menu-icon">🎨</span>
+            <span class="start-menu-label">CyberPaint</span>
+        </div>
+        <div class="start-menu-item" data-window="snake-window">
+            <span class="start-menu-icon">🐍</span>
+            <span class="start-menu-label">Retro Snake</span>
+        </div>
+        <div class="start-menu-item" data-window="terminal-window">
+            <span class="start-menu-icon">🖥️</span>
+            <span class="start-menu-label">Shell Terminal</span>
+        </div>
+        <div class="start-menu-item" data-window="customizer-window">
+            <span class="start-menu-icon">⚙️</span>
+            <span class="start-menu-label">Customizer</span>
+        </div>
+        <div class="start-menu-footer">
+            <button id="shutdown-btn" class="start-menu-shutdown">Log Out</button>
+        </div>
+    </div>
+
+    <!-- 5. Dock / Taskbar -->
+    <div id="dock-container">
+        <div class="dock-left">
+            <button id="start-btn" class="start-btn">☰ Menu</button>
+            <div class="dock-shortcuts">
+                <button class="dock-shortcut-btn" data-window="about-window" title="Specs">📡</button>
+                <button class="dock-shortcut-btn" data-window="devlog-window" title="Devlogs">📚</button>
+                <button class="dock-shortcut-btn" data-window="paint-window" title="Paint">🎨</button>
+                <button class="dock-shortcut-btn" data-window="snake-window" title="Snake">🐍</button>
+                <button class="dock-shortcut-btn" data-window="terminal-window" title="Terminal">🖥️</button>
+                <button class="dock-shortcut-btn" data-window="customizer-window" title="Customizer">⚙️</button>
+            </div>
+        </div>
+        <div class="dock-right">
+            <div class="dock-system-info">
+                <span>⚡ <span id="system-battery">98%</span></span>
+                <span>📶 Connected</span>
+            </div>
+            <div id="system-clock" class="dock-clock">00:00</div>
+        </div>
+    </div>
+
+    <!-- App JavaScript Bindings -->
+    <script src="app.js"></script>
+</body>
+</html>
