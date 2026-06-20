@@ -543,11 +543,45 @@ function initSystemUI() {
         updateDockIndicators();
     });
     
+    // Specs & Devlogs Navigation Tabs
+    const specsNavBtns = document.querySelectorAll('.specs-nav-btn');
+    const specsTabContents = document.querySelectorAll('.specs-tab-content');
+    
+    function showSpecsTab(tabId) {
+        specsTabContents.forEach(tab => {
+            if (tab.id === tabId) {
+                tab.style.display = 'block';
+                tab.classList.add('active');
+            } else {
+                tab.style.display = 'none';
+                tab.classList.remove('active');
+            }
+        });
+        specsNavBtns.forEach(btn => {
+            if (btn.dataset.tab === tabId) {
+                btn.classList.add('active');
+            } else {
+                btn.classList.remove('active');
+            }
+        });
+    }
+    
+    specsNavBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            showSpecsTab(btn.dataset.tab);
+            playSound('click');
+        });
+    });
+    
+    // Expose showSpecsTab globally for terminal shortcuts
+    window.showSpecsTab = showSpecsTab;
+
     // Devlogs Reader Navigation
     const devlogBody = document.getElementById('devlog-body');
     const devlogNavBtns = document.querySelectorAll('.devlog-nav-btn');
     
     function loadDevlog(logKey) {
+        if (!devlogBody) return;
         devlogBody.innerHTML = devlogsData[logKey] || '<p>Devlog not found.</p>';
         devlogNavBtns.forEach(btn => {
             if (btn.dataset.log === logKey) {
@@ -922,14 +956,17 @@ function executeCommand(cmdStr) {
             
         case 'devlogs':
             if (arg === '1' || arg === '2' || arg === '3') {
-                openWindow('devlog-window');
+                openWindow('about-window');
+                if (window.showSpecsTab) {
+                    window.showSpecsTab('specs-devlogs');
+                }
                 const navButtons = document.querySelectorAll('.devlog-nav-btn');
                 navButtons.forEach(btn => {
                     if (btn.dataset.log === `devlog${arg}`) {
                         btn.click();
                     }
                 });
-                printTerminalLine(`Opening Devlog Part ${arg} in Devlog App.`);
+                printTerminalLine(`Opening Devlog Part ${arg} in Specs & Devlogs app.`);
             } else {
                 printTerminalLine("Use: devlogs [1|2|3]");
             }

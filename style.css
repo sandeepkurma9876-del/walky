@@ -1820,3 +1820,82 @@ body.dark-mode .ai-chat-send-btn {
 .ai-chat-send-btn:active {
     transform: scale(0.95);
 }
+
+/* ==========================================
+   APP: Specs & About
+   ========================================== */
+.specs-app {
+    display: grid;
+    grid-template-columns: 165px 1fr;
+    height: 100%;
+}
+
+.specs-sidebar {
+    background: rgba(0, 0, 0, 0.02);
+    border-right: 1px solid rgba(0, 0, 0, 0.05);
+    padding: 16px 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+body.dark-mode .specs-sidebar {
+    background: rgba(255, 255, 255, 0.01);
+    border-right-color: rgba(255, 255, 255, 0.05);
+}
+
+.specs-nav-btn {
+    background: transparent;
+    border: none;
+    padding: 8px 12px;
+    border-radius: var(--radius-sm);
+    color: var(--text-secondary);
+    font-size: 0.76rem;
+    font-weight: 500;
+    text-align: left;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.specs-nav-btn:hover {
+    background: rgba(0, 0, 0, 0.04);
+    color: var(--text-primary);
+}
+
+body.dark-mode .specs-nav-btn:hover {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.specs-nav-btn.active {
+    background: var(--text-primary);
+    color: #fff !important;
+    font-weight: 600;
+}
+
+body.dark-mode .specs-nav-btn.active {
+    color: #000 !important;
+}
+
+.specs-content-area {
+    padding: 24px;
+    overflow-y: auto;
+    height: 100%;
+}
+
+@media (max-width: 768px) {
+    .specs-app {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto 1fr;
+    }
+    
+    .specs-sidebar {
+        border-right: none;
+        border-bottom: 1px solid rgba(0,0,0,0.05);
+        flex-direction: row;
+        overflow-x: auto;
+        padding: 10px;
+    }
+}

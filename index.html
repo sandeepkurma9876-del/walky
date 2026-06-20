@@ -26,12 +26,7 @@
         <!-- App Shortcut Icons -->
         <div class="desktop-icon" data-window="about-window">
             <div class="icon-image">📡</div>
-            <div class="icon-label">System Specs</div>
-        </div>
-
-        <div class="desktop-icon" data-window="devlog-window">
-            <div class="icon-image">📚</div>
-            <div class="icon-label">Devlogs</div>
+            <div class="icon-label">Specs & Devlogs</div>
         </div>
 
         <div class="desktop-icon" data-window="paint-window">
@@ -59,58 +54,58 @@
     <!-- 3. Windows Container -->
     
     <!-- App: About Spec Window -->
-    <div id="about-window" class="window">
+    <div id="about-window" class="window" style="width: 720px; height: 500px;">
         <div class="window-header">
             <div class="window-controls">
                 <button class="window-btn close"></button>
                 <button class="window-btn minimize"></button>
                 <button class="window-btn maximize"></button>
             </div>
-            <div class="window-title">System Specs</div>
-        </div>
-        <div class="window-body">
-            <div class="about-container">
-                <div class="about-header-logo">Mountain OS</div>
-                <div class="about-tag">WebOS 1</div>
-                <p>A personal desktop built for the web. Drag windows around, draw something, play snake, or mess with the terminal. Built from scratch with HTML, CSS, and JavaScript.</p>
-                <div class="about-spec-grid">
-                    <span class="spec-label">Environment</span>
-                    <span class="spec-val">Mountain OS v1.0</span>
-                    <span class="spec-label">Host Browser</span>
-                    <span class="spec-val">Local Javascript Runtime</span>
-                    <span class="spec-label">Graphics Engine</span>
-                    <span class="spec-val">HTML5 Canvas (2D Accelerator)</span>
-                    <span class="spec-label">Audio Engine</span>
-                    <span class="spec-val">Web Audio API Synth</span>
-                    <span class="spec-label">Access Policy</span>
-                    <span class="spec-val">Unlocked (Passwordless)</span>
-                </div>
-                <p style="font-size: 0.8rem; color: var(--text-tertiary);">Built for Hack Club Stardance — WebOS Mission 1</p>
-            </div>
-        </div>
-    </div>
-
-    <!-- App: Devlogs Reader -->
-    <div id="devlog-window" class="window" style="width: 720px; height: 500px;">
-        <div class="window-header">
-            <div class="window-controls">
-                <button class="window-btn close"></button>
-                <button class="window-btn minimize"></button>
-                <button class="window-btn maximize"></button>
-            </div>
-            <div class="window-title">Devlogs</div>
+            <div class="window-title">Specs & Devlogs</div>
         </div>
         <div class="window-body" style="padding: 0;">
-            <div class="devlog-app">
-                <div class="devlog-sidebar">
-                    <div class="devlog-sidebar-title">Devlogs</div>
-                    <button class="devlog-nav-btn active" data-log="devlog1">1. Structure & Style</button>
-                    <button class="devlog-nav-btn" data-log="devlog2">2. Window Manager</button>
-                    <button class="devlog-nav-btn" data-log="devlog3">3. Advanced Apps</button>
+            <div class="specs-app">
+                <div class="specs-sidebar">
+                    <button class="specs-nav-btn active" data-tab="specs-info">📡 System Specs</button>
+                    <button class="specs-nav-btn" data-tab="specs-devlogs">📚 Devlogs</button>
                 </div>
-                <div class="devlog-content-area">
-                    <div id="devlog-body" class="devlog-body-text">
-                        <!-- Loaded dynamically -->
+                <div class="specs-content-area">
+                    <!-- Specs Info Tab -->
+                    <div id="specs-info" class="specs-tab-content active">
+                        <div class="about-container" style="padding: 0;">
+                            <div class="about-header-logo">Mountain OS</div>
+                            <div class="about-tag">WebOS 1</div>
+                            <p>A personal desktop built for the web. Drag windows around, draw something, play snake, or mess with the terminal. Built from scratch with HTML, CSS, and JavaScript.</p>
+                            <div class="about-spec-grid">
+                                <span class="spec-label">Environment</span>
+                                <span class="spec-val">Mountain OS v1.0</span>
+                                <span class="spec-label">Host Browser</span>
+                                <span class="spec-val">Local Javascript Runtime</span>
+                                <span class="spec-label">Graphics Engine</span>
+                                <span class="spec-val">HTML5 Canvas (2D Accelerator)</span>
+                                <span class="spec-label">Audio Engine</span>
+                                <span class="spec-val">Web Audio API Synth</span>
+                                <span class="spec-label">Access Policy</span>
+                                <span class="spec-val">Unlocked (Passwordless)</span>
+                            </div>
+                            <p style="font-size: 0.8rem; color: var(--text-tertiary); margin-top: 16px;">Built for Hack Club Stardance — WebOS Mission 1</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Devlogs Tab -->
+                    <div id="specs-devlogs" class="specs-tab-content" style="display: none; height: 100%;">
+                        <div class="devlog-app" style="height: 100%;">
+                            <div class="devlog-sidebar" style="padding: 0; background: transparent; border-right: none;">
+                                <button class="devlog-nav-btn active" data-log="devlog1">1. Structure & Style</button>
+                                <button class="devlog-nav-btn" data-log="devlog2">2. Window Manager</button>
+                                <button class="devlog-nav-btn" data-log="devlog3">3. Advanced Apps</button>
+                            </div>
+                            <div class="devlog-content-area" style="padding: 0 0 0 16px; border-left: 1px solid rgba(0, 0, 0, 0.05); height: 100%; overflow-y: auto;">
+                                <div id="devlog-body" class="devlog-body-text">
+                                    <!-- Loaded dynamically -->
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -273,11 +268,7 @@
         </div>
         <div class="start-menu-item" data-window="about-window">
             <span class="start-menu-icon">📡</span>
-            <span class="start-menu-label">System Specs</span>
-        </div>
-        <div class="start-menu-item" data-window="devlog-window">
-            <span class="start-menu-icon">📚</span>
-            <span class="start-menu-label">Devlogs</span>
+            <span class="start-menu-label">Specs & Devlogs</span>
         </div>
         <div class="start-menu-item" data-window="paint-window">
             <span class="start-menu-icon">🎨</span>
@@ -352,8 +343,7 @@
         <div class="dock-left">
             <button id="start-btn" class="start-btn">☰ Menu</button>
             <div class="dock-shortcuts">
-                <button class="dock-shortcut-btn" data-window="about-window" title="Specs">📡</button>
-                <button class="dock-shortcut-btn" data-window="devlog-window" title="Devlogs">📚</button>
+                <button class="dock-shortcut-btn" data-window="about-window" title="Specs & Devlogs">📡</button>
                 <button class="dock-shortcut-btn" data-window="paint-window" title="Paint">🎨</button>
                 <button class="dock-shortcut-btn" data-window="snake-window" title="Snake">🐍</button>
                 <button class="dock-shortcut-btn" data-window="terminal-window" title="Terminal">🖥️</button>
