@@ -9,11 +9,15 @@
 </head>
 <body>
 
-    <!-- 1. Boot / Welcome Welcome Screen (Password-less Login) -->
+    <!-- 1. Boot / Welcome Screen (macOS-style Lockscreen) -->
     <div id="welcome-screen">
-        <div class="welcome-logo">Walky OS</div>
-        <div class="welcome-subtitle">personal desktop</div>
-        <button id="boot-btn" class="boot-button">Enter</button>
+        <div class="login-avatar">👨‍💻</div>
+        <div class="login-username">Sandeep</div>
+        <form id="login-form" class="login-form" onsubmit="event.preventDefault();">
+            <input type="password" id="password-input" class="login-password-input" value="••••••••" readonly>
+            <button type="submit" id="boot-btn" class="login-submit-btn">➔</button>
+        </form>
+        <div class="login-hint">Click the arrow or press Enter to unlock Walky OS</div>
     </div>
 
     <!-- 2. System Desktop Area -->
@@ -67,7 +71,8 @@
         <div class="window-body">
             <div class="about-container">
                 <div class="about-header-logo">Walky OS</div>
-                <p>A personal desktop environment that runs in your browser. Built with vanilla HTML, CSS, and JavaScript — featuring draggable windows, a drawing canvas, a snake game, and an interactive terminal.</p>
+                <div class="about-tag">WebOS 1</div>
+                <p>A personal desktop built for the web. Drag windows around, draw something, play snake, or mess with the terminal. Built from scratch with HTML, CSS, and JavaScript.</p>
                 <div class="about-spec-grid">
                     <span class="spec-label">Environment</span>
                     <span class="spec-val">Walky OS v1.0</span>
@@ -218,17 +223,17 @@
                     <div class="customizer-row">
                         <label for="wallpaper-select" class="paint-label">Choose Preset:</label>
                         <select id="wallpaper-select" class="customizer-input-text" style="width: 180px;">
-                            <option value="aurora">Electric Aurora</option>
-                            <option value="sunset">Neon Sunset</option>
-                            <option value="matrix">Digital Void</option>
-                            <option value="dark">Solid Charcoal</option>
+                            <option value="monterey">Monterey Breeze</option>
+                            <option value="obsidian">Obsidian Dark</option>
+                            <option value="emerald">Emerald Mist</option>
+                            <option value="sunset">Sunset Satin</option>
                         </select>
                     </div>
                     <div class="wallpaper-presets">
-                        <div class="wallpaper-card bg-gradient-aurora active" data-theme="aurora">Aurora</div>
-                        <div class="wallpaper-card bg-gradient-sunset" data-theme="sunset">Sunset</div>
-                        <div class="wallpaper-card bg-gradient-matrix" data-theme="matrix">Void</div>
-                        <div class="wallpaper-card bg-solid-dark" data-theme="dark">Solid</div>
+                        <div class="wallpaper-card bg-monterey active" data-theme="monterey" style="background: linear-gradient(135deg, #8ec5fc 0%, #e0c3fc 100%); color: #4a3b6d; font-weight: 700;">Monterey</div>
+                        <div class="wallpaper-card bg-obsidian" data-theme="obsidian" style="background: linear-gradient(135deg, #1c1917 0%, #44403c 100%); color: #f5f0e8; font-weight: 700;">Obsidian</div>
+                        <div class="wallpaper-card bg-emerald" data-theme="emerald" style="background: linear-gradient(135deg, #a7f3d0 0%, #064e3b 100%); color: #064e3b; font-weight: 700;">Emerald</div>
+                        <div class="wallpaper-card bg-sunset" data-theme="sunset" style="background: linear-gradient(135deg, #ffedd5 0%, #ca8a04 100%); color: #78350f; font-weight: 700;">Sunset</div>
                     </div>
                     <div class="customizer-row" style="margin-top: 8px;">
                         <span class="paint-label">Custom Image URL:</span>
@@ -295,6 +300,53 @@
         </div>
     </div>
 
+    <!-- 4b. Control Center Panel -->
+    <div id="control-center" class="control-center-panel">
+        <div class="cc-grid">
+            <div class="cc-tile cc-double">
+                <div class="cc-tile-header">
+                    <span class="cc-tile-icon">📶</span>
+                    <div class="cc-tile-text">
+                        <span class="cc-title">Wi-Fi</span>
+                        <span class="cc-subtitle">Sandeep_WiFi</span>
+                    </div>
+                </div>
+            </div>
+            <div class="cc-tile cc-clickable" id="cc-dark-mode-toggle">
+                <div class="cc-tile-center">
+                    <span class="cc-tile-icon">🌙</span>
+                    <span class="cc-title">Dark Mode</span>
+                </div>
+            </div>
+            <div class="cc-tile cc-clickable" id="cc-audio-toggle">
+                <div class="cc-tile-center">
+                    <span class="cc-tile-icon">🔊</span>
+                    <span class="cc-title">Sound Chime</span>
+                </div>
+            </div>
+        </div>
+        <div class="cc-slider-row">
+            <span class="cc-slider-icon">🔊</span>
+            <input type="range" id="cc-volume-slider" class="cc-slider" min="0" max="1" step="0.1" value="0.8">
+        </div>
+        <div class="cc-slider-row">
+            <span class="cc-slider-icon">☀️</span>
+            <input type="range" id="cc-brightness-slider" class="cc-slider" min="30" max="100" value="100">
+        </div>
+        <div class="cc-stats">
+            <div class="cc-stat">
+                <span class="cc-stat-label">CPU</span>
+                <div class="cc-stat-bar-container"><div id="cc-cpu-bar" class="cc-stat-bar" style="width: 12%"></div></div>
+                <span id="cc-cpu-text" class="cc-stat-val">12%</span>
+            </div>
+            <div class="cc-stat">
+                <span class="cc-stat-label">RAM</span>
+                <div class="cc-stat-bar-container"><div id="cc-ram-bar" class="cc-stat-bar" style="width: 42%"></div></div>
+                <span id="cc-ram-text" class="cc-stat-val">42%</span>
+            </div>
+        </div>
+    </div>
+
     <!-- 5. Dock / Taskbar -->
     <div id="dock-container">
         <div class="dock-left">
@@ -311,7 +363,7 @@
         <div class="dock-right">
             <div class="dock-system-info">
                 <span>⚡ <span id="system-battery">98%</span></span>
-                <span>📶 Connected</span>
+                <button id="control-center-btn" class="dock-cc-btn" title="Control Center">🎛️</button>
             </div>
             <div id="system-clock" class="dock-clock">00:00</div>
         </div>

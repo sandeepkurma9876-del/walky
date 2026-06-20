@@ -1,4 +1,4 @@
-// WebOS - AetherOS Core Script
+// WebOS - AeroGlass OS Core Script
 
 // 1. Audio Synthesizer (Web Audio API)
 let audioCtx = null;
@@ -20,145 +20,127 @@ function playSound(type) {
         audioCtx.resume();
     }
     
-    const osc = audioCtx.createOscillator();
-    const gainNode = audioCtx.createGain();
-    
-    osc.connect(gainNode);
-    gainNode.connect(audioCtx.destination);
-    
     const now = audioCtx.currentTime;
     
     if (type === 'boot') {
-        // Futuristic chord: minor to major sweep
-        osc.type = 'sawtooth';
-        osc.frequency.setValueAtTime(130.81, now); // C3
-        osc.frequency.exponentialRampToValueAtTime(261.63, now + 0.3); // C4
-        osc.frequency.exponentialRampToValueAtTime(392.00, now + 0.6); // G4
-        osc.frequency.exponentialRampToValueAtTime(523.25, now + 1.0); // C5
+        // Futuristic premium major 7th chord (similar to macOS startup chime)
+        const notes = [130.81, 196.00, 261.63, 329.63, 392.00, 493.88]; // C3, G3, C4, E4, G4, B4
+        notes.forEach((freq, index) => {
+            const osc = audioCtx.createOscillator();
+            const gainNode = audioCtx.createGain();
+            osc.connect(gainNode);
+            gainNode.connect(audioCtx.destination);
+            
+            osc.type = index % 2 === 0 ? 'sine' : 'triangle';
+            osc.frequency.setValueAtTime(freq, now);
+            osc.frequency.exponentialRampToValueAtTime(freq * 1.002, now + 1.6);
+            
+            gainNode.gain.setValueAtTime(0, now);
+            gainNode.gain.linearRampToValueAtTime(0.04, now + 0.15 + (index * 0.04));
+            gainNode.gain.exponentialRampToValueAtTime(0.0001, now + 1.8);
+            
+            osc.start(now);
+            osc.stop(now + 2.0);
+        });
+    } else {
+        const osc = audioCtx.createOscillator();
+        const gainNode = audioCtx.createGain();
+        osc.connect(gainNode);
+        gainNode.connect(audioCtx.destination);
         
-        gainNode.gain.setValueAtTime(0.01, now);
-        gainNode.gain.linearRampToValueAtTime(0.15, now + 0.2);
-        gainNode.gain.exponentialRampToValueAtTime(0.01, now + 1.2);
-        
-        osc.start(now);
-        osc.stop(now + 1.3);
-    } else if (type === 'click') {
-        osc.type = 'sine';
-        osc.frequency.setValueAtTime(800, now);
-        osc.frequency.exponentialRampToValueAtTime(1200, now + 0.05);
-        
-        gainNode.gain.setValueAtTime(0.05, now);
-        gainNode.gain.linearRampToValueAtTime(0.001, now + 0.08);
-        
-        osc.start(now);
-        osc.stop(now + 0.1);
-    } else if (type === 'open') {
-        osc.type = 'triangle';
-        osc.frequency.setValueAtTime(300, now);
-        osc.frequency.exponentialRampToValueAtTime(600, now + 0.15);
-        
-        gainNode.gain.setValueAtTime(0.08, now);
-        gainNode.gain.linearRampToValueAtTime(0.001, now + 0.2);
-        
-        osc.start(now);
-        osc.stop(now + 0.25);
-    } else if (type === 'error') {
-        osc.type = 'sawtooth';
-        osc.frequency.setValueAtTime(150, now);
-        osc.frequency.setValueAtTime(100, now + 0.1);
-        
-        gainNode.gain.setValueAtTime(0.15, now);
-        gainNode.gain.linearRampToValueAtTime(0.001, now + 0.35);
-        
-        osc.start(now);
-        osc.stop(now + 0.4);
-    } else if (type === 'point') {
-        // Point scored in snake
-        osc.type = 'sine';
-        osc.frequency.setValueAtTime(523.25, now); // C5
-        osc.frequency.setValueAtTime(659.25, now + 0.08); // E5
-        
-        gainNode.gain.setValueAtTime(0.08, now);
-        gainNode.gain.linearRampToValueAtTime(0.001, now + 0.18);
-        
-        osc.start(now);
-        osc.stop(now + 0.2);
-    } else if (type === 'gameover') {
-        osc.type = 'sawtooth';
-        osc.frequency.setValueAtTime(300, now);
-        osc.frequency.linearRampToValueAtTime(100, now + 0.5);
-        
-        gainNode.gain.setValueAtTime(0.1, now);
-        gainNode.gain.linearRampToValueAtTime(0.001, now + 0.6);
-        
-        osc.start(now);
-        osc.stop(now + 0.6);
+        if (type === 'click') {
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(600, now);
+            osc.frequency.exponentialRampToValueAtTime(1000, now + 0.04);
+            
+            gainNode.gain.setValueAtTime(0.04, now);
+            gainNode.gain.linearRampToValueAtTime(0.001, now + 0.06);
+            
+            osc.start(now);
+            osc.stop(now + 0.08);
+        } else if (type === 'open') {
+            osc.type = 'triangle';
+            osc.frequency.setValueAtTime(320, now);
+            osc.frequency.exponentialRampToValueAtTime(580, now + 0.12);
+            
+            gainNode.gain.setValueAtTime(0.06, now);
+            gainNode.gain.linearRampToValueAtTime(0.001, now + 0.18);
+            
+            osc.start(now);
+            osc.stop(now + 0.2);
+        } else if (type === 'error') {
+            osc.type = 'sawtooth';
+            osc.frequency.setValueAtTime(140, now);
+            osc.frequency.setValueAtTime(95, now + 0.1);
+            
+            gainNode.gain.setValueAtTime(0.12, now);
+            gainNode.gain.linearRampToValueAtTime(0.001, now + 0.3);
+            
+            osc.start(now);
+            osc.stop(now + 0.35);
+        } else if (type === 'point') {
+            // Point scored in snake
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(523.25, now); // C5
+            osc.frequency.setValueAtTime(659.25, now + 0.08); // E5
+            
+            gainNode.gain.setValueAtTime(0.06, now);
+            gainNode.gain.linearRampToValueAtTime(0.001, now + 0.15);
+            
+            osc.start(now);
+            osc.stop(now + 0.18);
+        } else if (type === 'gameover') {
+            osc.type = 'sawtooth';
+            osc.frequency.setValueAtTime(280, now);
+            osc.frequency.linearRampToValueAtTime(90, now + 0.45);
+            
+            gainNode.gain.setValueAtTime(0.08, now);
+            gainNode.gain.linearRampToValueAtTime(0.001, now + 0.5);
+            
+            osc.start(now);
+            osc.stop(now + 0.5);
+        }
     }
 }
 
 // 2. Devlog Database (Stored locally for offline & file:// capability)
 const devlogsData = {
-    devlog1: `<h1>Devlog 1: Setting up AetherOS Design and Layout</h1>
-<p>Today, I began building <strong>AetherOS</strong>, my web-based operating system. I wanted to move away from the traditional, flat Windows 95/Classic UI that many people build, and create a premium, futuristic "Cyber-Glassmorphism" theme instead.</p>
-<h3>1. Setting Up the CSS Variables & Theme</h3>
-<p>I defined the core color palette and styling variables in <code>style.css</code>:</p>
+    devlog1: `<h1>Devlog 1: Setting up AeroGlass Design and Layout</h1>
+<p>Today, I began building <strong>AeroGlass OS</strong>, my web-based operating system. I wanted to move away from traditional retro templates and instead adopt a premium, ultra-slick macOS-like liquid glass theme.</p>
+<h3>1. Designing the Glassmorphism UI</h3>
+<p>I defined the core design tokens in <code>style.css</code>:</p>
 <ul>
-<li><strong>Colors</strong>: Pure dark background, deep charcoal translucent window backgrounds, vibrant cyan and magenta glowing borders for active states.</li>
-<li><strong>Fonts</strong>: Custom font links to Google Fonts for <em>Orbitron</em> (gives a sci-fi/digital clock look) and <em>Inter</em> (very readable sans-serif for UI elements).</li>
-<li><strong>Glass Effect</strong>: Implemented <code>backdrop-filter: blur(12px)</code> and a subtle <code>rgba(255, 255, 255, 0.05)</code> background to create transparent, frosted-glass panels.</li>
+<li><strong>Liquid Backgrounds</strong>: Implemented smooth drifting glowing color orbs in the background using animated CSS radial gradients.</li>
+<li><strong>AeroGlass Windows</strong>: Utilized high translucency with <code>backdrop-filter: blur(28px) saturate(180%)</code>, pure white borders with low opacity, and wide, soft box shadows to mimic Apple's premium glass feel.</li>
+<li><strong>Clean Typography</strong>: Selected <em>Outfit</em> for headers and <em>Inter</em> for normal text to keep the interface feeling professional and balanced.</li>
 </ul>
-<h3>2. Designing the Desktop Environment</h3>
-<p>I created:</p>
+<h3>2. Creating Desktop and Dock</h3>
 <ul>
-<li>A <strong>Boot/Welcome Screen</strong> overlay. When you load the page, the screen presents a sleek central hub with a glowing "Boot System" button. Clicking this triggers the system initialize sound and fades out the screen to reveal the desktop.</li>
-<li>A <strong>Desktop Area</strong> that supports custom grid positioning for app icons (Shortcuts).</li>
-<li>A bottom <strong>Dock/Taskbar</strong> featuring a digital clock, a battery level indicator simulator, open app windows, and app launchers.</li>
+<li>Designed a bottom floating <strong>Dock</strong> that holds shortcut items, open app indicators, and clock.</li>
+<li>Created smooth, bouncy magnify scaling animations on dock icons when hovered.</li>
 </ul>`,
     devlog2: `<h1>Devlog 2: Coding the Custom Window Manager</h1>
-<p>With the main visual layout and workspace ready, the next step was building the Javascript-based window manager.</p>
-<h3>1. Window Operations (Open, Close, Minimize, Maximize)</h3>
-<p>Each window consists of:</p>
+<p>With the visual layout ready, the next step was building a robust JavaScript window manager.</p>
+<h3>1. Robust Centering and Positioning</h3>
+<p>Unlike basic templates, I wrote positioning code that uses <code>offsetWidth</code> and <code>offsetHeight</code> to accurately calculate the window's rendered bounding coordinates. When any desktop icon is clicked, the window opens perfectly centered in the viewport.</p>
+<h3>2. Dragging and Layering Focus</h3>
 <ul>
-<li>A container <code>.window</code> with absolute positioning.</li>
-<li>A header <code>.window-header</code> which acts as the handle.</li>
-<li>Window controls: Red dot (Close), Yellow dot (Minimize), Green dot (Maximize).</li>
-<li>A body <code>.window-body</code> holding the content.</li>
-</ul>
-<p>I wrote handlers in <code>app.js</code> to toggle CSS classes like <code>.hidden</code> (for minimizing/closing) and <code>.maximized</code> (which sets the window to full viewport size).</p>
-<h3>2. Multi-touch and Drag Logic</h3>
-<p>To make the windows draggable:</p>
-<ul>
-<li>I attached <code>mousedown</code> and <code>touchstart</code> event listeners to the <code>.window-header</code> element.</li>
-<li>When clicked, the script computes the mouse's offset relative to the window's top-left corner.</li>
-<li>It registers dynamic <code>mousemove</code>/<code>touchmove</code> listeners on the <code>document</code> level to shift the window coordinates smoothly.</li>
-<li>On mouse/touch up, these listeners are removed, leaving the window in place.</li>
-</ul>
-<h3>3. Layering & Focus Z-Index Management</h3>
-<p>To handle overlapping windows:</p>
-<ul>
-<li>I declared a global tracking variable <code>highestZIndex</code> in JavaScript.</li>
-<li>Whenever a window header is clicked or drag begins, the manager updates the window's <code>z-index</code> to <code>highestZIndex + 1</code>, and increments <code>highestZIndex</code>. This ensures that active or clicked windows dynamically pop to the foreground.</li>
+<li>Attached <code>mousedown</code> and <code>touchstart</code> listeners to the window header to allow seamless window dragging across the desktop on desktop and mobile browsers.</li>
+<li>Maintained a global <code>highestZIndex</code> variable. Whenever a user clicks on a window, it pops to the foreground dynamically, focusing state.</li>
+<li>Created macOS-style traffic light controls (close, minimize, maximize) that render clean icons (`×`, `−`, `+`) on hover.</li>
 </ul>`,
-    devlog3: `<h1>Devlog 3: Custom Features and Final Assembly</h1>
-<p>Today was dedicated to adding high-fidelity, interactive feature sets that exceed standard guides.</p>
-<h3>1. Retro Canvas Paint (CyberPaint)</h3>
-<p>I added a full canvas drawing tool. Moving the mouse inside the canvas draws pixels. Added color palette presets, line thickness sliders, and a clear button.</p>
-<h3>2. Retro Snake Game</h3>
-<p>Built a custom, self-contained grid-based Snake game. Implemented keyboard arrow listeners, score tracking, start/restart buttons, and synthesized retro win/fail buzzes.</p>
-<h3>3. Interactive Shell Terminal with Matrix Falling Code</h3>
-<p>I built an interactive terminal emulator. It parses commands like <code>help</code>, <code>neofetch</code> (displays an ASCII system logo), <code>theme</code>, <code>clear</code>, and <code>matrix</code>.</p>
+    devlog3: `<h1>Devlog 3: Advanced App Ecosystem & Control Center</h1>
+<p>Today, I finalized the feature set by coding fully operational custom apps and a simulated Control Center.</p>
+<h3>1. macOS-style Control Center</h3>
+<p>Added a floating Control Center panel linked to a dock widget. It allows live toggle of Dark Mode, sound volume control, screen brightness adjustment (filtering the DOM), and simulates hardware load stats (CPU/RAM metrics) in real-time.</p>
+<h3>2. Synthesized Startup Sound</h3>
+<p>Implemented a premium Web Audio API startup sound. Clicking "Unlock" in the passwordless macOS login screen plays a rich major 7th chord sweep rather than a generic beep.</p>
+<h3>3. Built-in Apps</h3>
 <ul>
-<li>Typing <code>matrix</code> starts a glowing, falling green character rain animation inside the terminal window! Typing <code>matrix</code> again toggles it off.</li>
-</ul>
-<h3>4. Audio Synthesizer (Web Audio API)</h3>
-<p>Using only native code (no audio files!), I configured an <code>AudioContext</code> to generate retro synthesizers:</p>
-<ul>
-<li><em>Startup Chime</em>: A nice, rich minor-to-major synthesizer chord.</li>
-<li><em>Click Sound</em>: Soft high-pitched click.</li>
-<li><em>Game Win/Lose Beeps</em>: Fun high/low frequency transitions.</li>
-</ul>
-<h3>5. Final Polishing</h3>
-<p>Tested window transitions, added volume and background controllers to the customizer, and styled all items for maximum responsiveness. AetherOS is ready to run!</p>`
+<li><strong>AeroPaint</strong>: Drawing canvas supporting brush stroke size, custom hex codes, clear action, and touch screen support.</li>
+<li><strong>Retro Snake</strong>: Self-contained retro arcade game inside a window with collision detection and point sound effects.</li>
+<li><strong>Aether Shell</strong>: Interactive terminal using zsh-style prompt that supports <code>neofetch</code>, <code>theme</code>, <code>matrix</code> code waterfall canvas, and command clear.</li>
+</ul>`
 };
 
 // 3. Global Window Manager State
@@ -215,7 +197,7 @@ function initWindowManager() {
             let left = e.clientX - offsetX;
             let top = e.clientY - offsetY;
             
-            // Constrain within viewport top boundary
+            // Constrain top boundary
             if (top < 0) top = 0;
             
             win.style.left = `${left}px`;
@@ -298,16 +280,16 @@ function openWindow(winId) {
     win.classList.add('open');
     openWindows.add(winId);
     
-    // Center the window on the viewport, with slight cascade offset
+    // Center the window on the viewport, with robust measurement
     if (!win.dataset.positioned) {
-        const winWidth = parseInt(win.style.width) || 640;
-        const winHeight = parseInt(win.style.height) || 480;
+        // Calculate offsetWidth/Height. If window is display hidden, it will fall back
+        const winWidth = win.offsetWidth || parseInt(win.style.width) || 640;
+        const winHeight = win.offsetHeight || parseInt(win.style.height) || 480;
         const vpWidth = window.innerWidth;
         const vpHeight = window.innerHeight - 72; // account for dock
         
-        const cascade = (openWindows.size * 30) % 120;
-        const centerX = Math.max(20, (vpWidth - winWidth) / 2 + cascade);
-        const centerY = Math.max(20, (vpHeight - winHeight) / 2 + cascade);
+        const centerX = Math.max(20, (vpWidth - winWidth) / 2);
+        const centerY = Math.max(20, (vpHeight - winHeight) / 2);
         
         win.style.left = `${centerX}px`;
         win.style.top = `${centerY}px`;
@@ -350,16 +332,12 @@ function minimizeWindow(winId) {
     
     win.classList.add('minimized');
     playSound('click');
+    updateDockIndicators();
 }
 
 function toggleMaximize(win) {
     win.classList.toggle('maximized');
     playSound('click');
-    
-    if (win.id === 'paint-window') {
-        // Redraw/resize canvas
-        initPaintCanvas();
-    }
 }
 
 function updateDockIndicators() {
@@ -367,14 +345,14 @@ function updateDockIndicators() {
         const target = btn.dataset.window;
         const win = document.getElementById(target);
         if (win && win.classList.contains('open')) {
-            btn.classList.add('active-indicator');
+            btn.classList.add('running');
         } else {
-            btn.classList.remove('active-indicator');
+            btn.classList.remove('running');
         }
     });
 }
 
-// Start Menu and Dock binds
+// Start Menu, Control Center and Dock binds
 function initSystemUI() {
     // Clock updates
     const clockEl = document.getElementById('system-clock');
@@ -387,18 +365,28 @@ function initSystemUI() {
     setInterval(updateClock, 1000);
     updateClock();
     
-    // Welcome Boot Button
+    // Welcome Lockscreen Submit
     const bootBtn = document.getElementById('boot-btn');
     const welcome = document.getElementById('welcome-screen');
-    bootBtn.addEventListener('click', () => {
+    const loginForm = document.getElementById('login-form');
+    
+    function performUnlock() {
         playSound('boot');
         welcome.classList.add('fade-out');
         setTimeout(() => {
             welcome.style.display = 'none';
-            // Open intro window
             openWindow('about-window');
-        }, 1000);
-    });
+        }, 800);
+    }
+    
+    if (loginForm) {
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            performUnlock();
+        });
+    } else if (bootBtn) {
+        bootBtn.addEventListener('click', performUnlock);
+    }
     
     // Desktop Shortcuts
     document.querySelectorAll('.desktop-icon').forEach(icon => {
@@ -437,11 +425,93 @@ function initSystemUI() {
         playSound('click');
     });
     
+    // Control Center Toggle
+    const ccBtn = document.getElementById('control-center-btn');
+    const controlCenter = document.getElementById('control-center');
+    ccBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        controlCenter.classList.toggle('show');
+        playSound('click');
+    });
+    
     document.addEventListener('click', (e) => {
-        if (!startMenu.contains(e.target) && e.target !== startBtn) {
+        if (startMenu && !startMenu.contains(e.target) && e.target !== startBtn) {
             startMenu.classList.remove('show');
         }
+        if (controlCenter && !controlCenter.contains(e.target) && e.target !== ccBtn) {
+            controlCenter.classList.remove('show');
+        }
     });
+    
+    // Dark mode toggle in CC
+    const darkModeToggle = document.getElementById('cc-dark-mode-toggle');
+    darkModeToggle.addEventListener('click', () => {
+        document.body.classList.toggle('dark-mode');
+        playSound('click');
+        
+        const isDark = document.body.classList.contains('dark-mode');
+        darkModeToggle.querySelector('.cc-tile-icon').innerText = isDark ? '☀️' : '🌙';
+        darkModeToggle.querySelector('.cc-title').innerText = isDark ? 'Light Mode' : 'Dark Mode';
+    });
+    
+    // Audio chime toggle in CC
+    const ccAudioToggle = document.getElementById('cc-audio-toggle');
+    ccAudioToggle.addEventListener('click', () => {
+        soundEnabled = !soundEnabled;
+        playSound('click');
+        
+        ccAudioToggle.querySelector('.cc-tile-icon').innerText = soundEnabled ? '🔊' : '🔇';
+        ccAudioToggle.querySelector('.cc-title').innerText = soundEnabled ? 'Sound Chime' : 'Muted';
+        
+        // Sync volume sliders
+        const volSlider = document.getElementById('cc-volume-slider');
+        const customizerVolSlider = document.getElementById('audio-volume');
+        if (soundEnabled) {
+            volSlider.value = 0.8;
+            if (customizerVolSlider) customizerVolSlider.value = 0.8;
+        } else {
+            volSlider.value = 0;
+            if (customizerVolSlider) customizerVolSlider.value = 0;
+        }
+    });
+    
+    // Volume Control in CC
+    const ccVolumeSlider = document.getElementById('cc-volume-slider');
+    ccVolumeSlider.addEventListener('input', (e) => {
+        const val = parseFloat(e.target.value);
+        soundEnabled = (val > 0);
+        
+        ccAudioToggle.querySelector('.cc-tile-icon').innerText = soundEnabled ? '🔊' : '🔇';
+        ccAudioToggle.querySelector('.cc-title').innerText = soundEnabled ? 'Sound Chime' : 'Muted';
+        
+        const customizerVolSlider = document.getElementById('audio-volume');
+        if (customizerVolSlider) customizerVolSlider.value = val;
+    });
+    
+    // Brightness Control in CC
+    const ccBrightnessSlider = document.getElementById('cc-brightness-slider');
+    ccBrightnessSlider.addEventListener('input', (e) => {
+        const val = e.target.value;
+        document.body.style.filter = `brightness(${val}%)`;
+    });
+    
+    // CPU/RAM metrics simulator
+    const cpuBar = document.getElementById('cc-cpu-bar');
+    const ramBar = document.getElementById('cc-ram-bar');
+    const cpuText = document.getElementById('cc-cpu-text');
+    const ramText = document.getElementById('cc-ram-text');
+    
+    setInterval(() => {
+        if (controlCenter && controlCenter.classList.contains('show')) {
+            const cpuLoad = Math.floor(Math.random() * 25) + 5; 
+            const ramLoad = Math.floor(Math.random() * 8) + 42; 
+            
+            if (cpuBar) cpuBar.style.width = `${cpuLoad}%`;
+            if (cpuText) cpuText.innerText = `${cpuLoad}%`;
+            if (ramBar) ramBar.style.width = `${ramLoad}%`;
+            if (ramText) ramText.innerText = `${ramLoad}%`;
+        }
+    }, 1500);
     
     // Start Menu Items Binds
     document.querySelectorAll('.start-menu-item').forEach(item => {
@@ -452,7 +522,7 @@ function initSystemUI() {
         });
     });
     
-    // Shutdown Action
+    // Shutdown Action (Logout)
     document.getElementById('shutdown-btn').addEventListener('click', () => {
         welcome.style.display = 'flex';
         welcome.classList.remove('fade-out');
@@ -469,11 +539,11 @@ function initSystemUI() {
     
     // Devlogs Reader Navigation
     const devlogBody = document.getElementById('devlog-body');
-    const navButtons = document.querySelectorAll('.devlog-nav-btn');
+    const devlogNavBtns = document.querySelectorAll('.devlog-nav-btn');
     
     function loadDevlog(logKey) {
         devlogBody.innerHTML = devlogsData[logKey] || '<p>Devlog not found.</p>';
-        navButtons.forEach(btn => {
+        devlogNavBtns.forEach(btn => {
             if (btn.dataset.log === logKey) {
                 btn.classList.add('active');
             } else {
@@ -482,14 +552,14 @@ function initSystemUI() {
         });
     }
     
-    navButtons.forEach(btn => {
+    devlogNavBtns.forEach(btn => {
         btn.addEventListener('click', () => {
             loadDevlog(btn.dataset.log);
             playSound('click');
         });
     });
     
-    // Default load devlog 1
+    // Load first devlog by default
     loadDevlog('devlog1');
 }
 
@@ -497,7 +567,7 @@ function initSystemUI() {
 let paintCanvas = null;
 let paintCtx = null;
 let isDrawing = false;
-let brushColor = '#5ac8fa';
+let brushColor = '#0ea5e9';
 let brushSize = 5;
 
 function initPaintCanvas() {
@@ -505,12 +575,10 @@ function initPaintCanvas() {
     if (!paintCanvas) return;
     paintCtx = paintCanvas.getContext('2d');
     
-    // Resize canvas based on parent container
     const container = paintCanvas.parentElement;
     paintCanvas.width = container.clientWidth;
     paintCanvas.height = container.clientHeight;
     
-    // Drawing setup
     paintCtx.lineCap = 'round';
     paintCtx.lineJoin = 'round';
     
@@ -547,7 +615,6 @@ function initPaintCanvas() {
     // Touch events
     paintCanvas.addEventListener('touchstart', (e) => {
         const touch = e.touches[0];
-        const rect = paintCanvas.getBoundingClientRect();
         startDrawing({
             clientX: touch.clientX,
             clientY: touch.clientY
@@ -610,7 +677,6 @@ function initSnakeGame() {
         startSnakeGame();
     });
     
-    // Keybind listeners for snake
     window.addEventListener('keydown', handleSnakeKeys);
 }
 
@@ -647,7 +713,6 @@ function spawnFood() {
         y: Math.floor(Math.random() * maxY) * gridSize
     };
     
-    // Verify food is not on snake body
     snake.forEach(part => {
         if (part.x === food.x && part.y === food.y) {
             spawnFood();
@@ -658,7 +723,6 @@ function spawnFood() {
 function handleSnakeKeys(e) {
     if (!isSnakeRunning) return;
     
-    // Check if snake window is in foreground
     const win = document.getElementById('snake-window');
     if (!win.classList.contains('active-window')) return;
     
@@ -682,7 +746,6 @@ function handleSnakeKeys(e) {
 }
 
 function updateSnakeStep() {
-    // Check collision with wall
     const head = { x: snake[0].x + dx, y: snake[0].y + dy };
     
     if (head.x < 0 || head.x >= snakeCanvas.width || head.y < 0 || head.y >= snakeCanvas.height || checkSelfCollision(head)) {
@@ -692,7 +755,6 @@ function updateSnakeStep() {
     
     snake.unshift(head);
     
-    // Eaten food?
     if (head.x === food.x && head.y === food.y) {
         score += 10;
         document.getElementById('snake-score').innerText = score;
@@ -713,11 +775,9 @@ function checkSelfCollision(head) {
 }
 
 function drawSnakeFrame() {
-    // Clear
     snakeCtx.fillStyle = '#0f1115';
     snakeCtx.fillRect(0, 0, snakeCanvas.width, snakeCanvas.height);
     
-    // Draw grid lines subtly
     snakeCtx.strokeStyle = 'rgba(255, 255, 255, 0.02)';
     for (let i = 0; i < snakeCanvas.width; i += gridSize) {
         snakeCtx.beginPath();
@@ -732,19 +792,18 @@ function drawSnakeFrame() {
     }
     
     // Draw food
-    snakeCtx.fillStyle = '#ff6b9d';
-    snakeCtx.shadowColor = '#ff6b9d';
+    snakeCtx.fillStyle = '#fb923c';
+    snakeCtx.shadowColor = '#fb923c';
     snakeCtx.shadowBlur = 6;
     snakeCtx.fillRect(food.x + 2, food.y + 2, gridSize - 4, gridSize - 4);
     
     // Draw snake
-    snakeCtx.shadowColor = '#5ac8fa';
+    snakeCtx.shadowColor = '#0ea5e9';
     snake.forEach((part, index) => {
-        snakeCtx.fillStyle = index === 0 ? '#5ac8fa' : 'rgba(90, 200, 250, 0.7)';
+        snakeCtx.fillStyle = index === 0 ? '#0ea5e9' : 'rgba(14, 165, 233, 0.7)';
         snakeCtx.fillRect(part.x + 1, part.y + 1, gridSize - 2, gridSize - 2);
     });
     
-    // Reset shadow
     snakeCtx.shadowBlur = 0;
 }
 
@@ -769,9 +828,7 @@ let matrixActive = false;
 
 function initTerminal() {
     const input = document.getElementById('term-input');
-    const termBody = document.getElementById('term-body');
     
-    // Input handle
     input.addEventListener('keydown', (e) => {
         if (e.key === 'Enter') {
             const command = input.value.trim();
@@ -782,14 +839,12 @@ function initTerminal() {
         }
     });
     
-    // Keep focus inside terminal on click
     document.getElementById('terminal-window').addEventListener('click', () => {
         input.focus();
     });
     
-    // Initial print
-    printTerminalLine("AetherOS Terminal Emulator v1.0.0");
-    printTerminalLine("Type 'help' for a list of available commands.");
+    printTerminalLine("AeroGlass Shell Terminal v1.0");
+    printTerminalLine("Type 'help' for available commands.");
     printTerminalLine("");
 }
 
@@ -803,7 +858,7 @@ function printTerminalLine(text) {
 }
 
 function executeCommand(cmdStr) {
-    printTerminalLine(`aether-user@os:~$ ${cmdStr}`);
+    printTerminalLine(`sandeep@walky:~$ ${cmdStr}`);
     playSound('click');
     
     const parts = cmdStr.split(' ');
@@ -815,24 +870,19 @@ function executeCommand(cmdStr) {
             printTerminalLine("Available Commands:");
             printTerminalLine("  help     - Display this menu");
             printTerminalLine("  neofetch - Display system specifications");
-            printTerminalLine("  matrix   - Toggle the green digital rain waterfall animation");
-            printTerminalLine("  theme    - Set colors: aurora, sunset, matrix, dark (e.g., theme sunset)");
+            printTerminalLine("  matrix   - Toggle the matrix code rain animation");
+            printTerminalLine("  theme    - Set wallpaper: monterey, obsidian, emerald, sunset (e.g., theme obsidian)");
             printTerminalLine("  audio    - Toggle synthesized sound output: on, off");
-            printTerminalLine("  clear    - Clear console console output");
+            printTerminalLine("  clear    - Clear console output");
             printTerminalLine("  devlogs  - Show devlog options (e.g., devlogs 1)");
             break;
             
         case 'neofetch':
-            printTerminalLine("       .---.          aether-user@AetherOS");
-            printTerminalLine("      /     \\         -------------------");
-            printTerminalLine("      \\_.._/          OS: AetherOS Web Edition 1.0");
-            printTerminalLine("      //\\\\\\\\          Kernel: WebJS-DOM 2026.06");
-            printTerminalLine("      \\\\\\\\//          Uptime: Just Booted");
-            printTerminalLine("       '--'           Shell: Javascript Interactive Shell");
-            printTerminalLine("                      Resolution: " + window.innerWidth + "x" + window.innerHeight);
-            printTerminalLine("                      Theme: Cyber-Glassmorphism v1");
-            printTerminalLine("                      CPU: Gemini-3.5-Flash (Simulated)");
-            printTerminalLine("                      Memory: 16GB Virtual Memory");
+            printTerminalLine("OS: Walky OS (AeroGlass v1.0)");
+            printTerminalLine("Host: Web Browser");
+            printTerminalLine("Shell: AeroShell v1.0");
+            printTerminalLine("Resolution: " + window.innerWidth + "x" + window.innerHeight);
+            printTerminalLine("Theme: Monterey Breeze (Liquid Glass)");
             break;
             
         case 'clear':
@@ -840,11 +890,11 @@ function executeCommand(cmdStr) {
             break;
             
         case 'theme':
-            if (['aurora', 'sunset', 'matrix', 'dark'].includes(arg)) {
+            if (['monterey', 'obsidian', 'emerald', 'sunset'].includes(arg)) {
                 setTheme(arg);
-                printTerminalLine(`Theme shifted successfully to [${arg}].`);
+                printTerminalLine(`Theme set to [${arg}].`);
             } else {
-                printTerminalLine("Unknown theme choice. Try: theme [aurora|sunset|matrix|dark]");
+                printTerminalLine("Unknown theme. Try: theme [monterey|obsidian|emerald|sunset]");
             }
             break;
             
@@ -868,7 +918,6 @@ function executeCommand(cmdStr) {
             if (arg === '1' || arg === '2' || arg === '3') {
                 openWindow('devlog-window');
                 const navButtons = document.querySelectorAll('.devlog-nav-btn');
-                // Simulate click on correct devlog
                 navButtons.forEach(btn => {
                     if (btn.dataset.log === `devlog${arg}`) {
                         btn.click();
@@ -888,7 +937,7 @@ function executeCommand(cmdStr) {
 
 function setTheme(themeName) {
     const body = document.body;
-    body.className = ''; // remove current
+    body.classList.remove('bg-monterey', 'bg-obsidian', 'bg-emerald', 'bg-sunset');
     
     // Reset cards selection in customizer app
     document.querySelectorAll('.wallpaper-card').forEach(card => {
@@ -903,14 +952,14 @@ function setTheme(themeName) {
     const sel = document.getElementById('wallpaper-select');
     if (sel) sel.value = themeName;
     
-    if (themeName === 'aurora') {
-        body.classList.add('bg-gradient-aurora');
+    if (themeName === 'monterey') {
+        body.classList.add('bg-monterey');
+    } else if (themeName === 'obsidian') {
+        body.classList.add('bg-obsidian');
+    } else if (themeName === 'emerald') {
+        body.classList.add('bg-emerald');
     } else if (themeName === 'sunset') {
-        body.classList.add('bg-gradient-sunset');
-    } else if (themeName === 'matrix') {
-        body.classList.add('bg-gradient-matrix');
-    } else if (themeName === 'dark') {
-        body.classList.add('bg-solid-dark');
+        body.classList.add('bg-sunset');
     }
 }
 
@@ -937,7 +986,7 @@ function toggleMatrixRain() {
             ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
             
-            ctx.fillStyle = '#0f0';
+            ctx.fillStyle = '#8ec5fc';
             ctx.font = '14px monospace';
             
             yPositions.forEach((y, index) => {
@@ -968,14 +1017,14 @@ function stopMatrixRain() {
 
 // 7. Customizer / Settings Setup
 function initCustomizer() {
-    // Wallpaper dropdown select Binds
     const wallpaperSelect = document.getElementById('wallpaper-select');
-    wallpaperSelect.addEventListener('change', (e) => {
-        setTheme(e.target.value);
-        playSound('click');
-    });
+    if (wallpaperSelect) {
+        wallpaperSelect.addEventListener('change', (e) => {
+            setTheme(e.target.value);
+            playSound('click');
+        });
+    }
     
-    // Preset cards click binds
     document.querySelectorAll('.wallpaper-card').forEach(card => {
         card.addEventListener('click', () => {
             const theme = card.dataset.theme;
@@ -984,24 +1033,24 @@ function initCustomizer() {
         });
     });
     
-    // Image URL changer
     const applyUrlBtn = document.getElementById('apply-wallpaper-url');
     const urlInput = document.getElementById('wallpaper-url-input');
     
-    applyUrlBtn.addEventListener('click', () => {
-        const url = urlInput.value.trim();
-        if (url) {
-            document.body.className = ''; // wipe gradient styles
-            document.body.style.backgroundImage = `url('${url}')`;
-            document.body.style.backgroundSize = 'cover';
-            document.body.style.backgroundPosition = 'center';
-            playSound('click');
-        } else {
-            playSound('error');
-        }
-    });
+    if (applyUrlBtn && urlInput) {
+        applyUrlBtn.addEventListener('click', () => {
+            const url = urlInput.value.trim();
+            if (url) {
+                document.body.className = ''; // wipe background classes
+                document.body.style.backgroundImage = `url('${url}')`;
+                document.body.style.backgroundSize = 'cover';
+                document.body.style.backgroundPosition = 'center';
+                playSound('click');
+            } else {
+                playSound('error');
+            }
+        });
+    }
     
-    // Soundboard buttons
     document.querySelectorAll('.sound-btn').forEach(btn => {
         btn.addEventListener('click', () => {
             const type = btn.dataset.sound;
@@ -1009,16 +1058,25 @@ function initCustomizer() {
         });
     });
     
-    // Volume Control Simulator
+    // Volume Control Simulator in Customizer
     const volumeSlider = document.getElementById('audio-volume');
-    volumeSlider.addEventListener('input', (e) => {
-        // Simple scale
-        if (e.target.value == 0) {
-            soundEnabled = false;
-        } else {
-            soundEnabled = true;
-        }
-    });
+    if (volumeSlider) {
+        volumeSlider.addEventListener('input', (e) => {
+            const val = parseFloat(e.target.value);
+            soundEnabled = (val > 0);
+            
+            // Sync Control Center volume slider
+            const ccVolSlider = document.getElementById('cc-volume-slider');
+            if (ccVolSlider) ccVolSlider.value = val;
+            
+            // Sync CC visual indicator
+            const ccAudioToggle = document.getElementById('cc-audio-toggle');
+            if (ccAudioToggle) {
+                ccAudioToggle.querySelector('.cc-tile-icon').innerText = soundEnabled ? '🔊' : '🔇';
+                ccAudioToggle.querySelector('.cc-title').innerText = soundEnabled ? 'Sound Chime' : 'Muted';
+            }
+        });
+    }
 }
 
 // 8. Main Entry Hook
@@ -1029,6 +1087,9 @@ document.addEventListener('DOMContentLoaded', () => {
     initTerminal();
     initCustomizer();
     
+    // Set Monterey Breeze as default body class
+    setTheme('monterey');
+    
     // Update battery level simulation
     const batteryLevel = document.getElementById('system-battery');
     if (batteryLevel) {
@@ -1037,6 +1098,6 @@ document.addEventListener('DOMContentLoaded', () => {
         setInterval(() => {
             charge = Math.max(1, charge - 1);
             batteryLevel.innerText = `${charge}%`;
-        }, 120000); // drain over time
+        }, 120000);
     }
 });
