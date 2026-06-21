@@ -1,0 +1,11 @@
+[Unit]
+Description=Slack Bot
+After=network-online.target
+
+[Service]
+ExecStart=/usr/bin/node /home/<your-user>/<your-repo>/index.js
+WorkingDirectory=/home/<your-user>/<your-repo>
+Restart=always
+
+[Install]
+WantedBy=default.target
